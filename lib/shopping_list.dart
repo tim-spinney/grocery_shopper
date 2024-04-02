@@ -41,10 +41,10 @@ class ShoppingList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: groceryItems.map(
-          (item) => _ShoppingListItem(groceryItem: item, onDelete: onDelete,)
-      ).toList(),
+    return ListView.builder(
+      itemCount: groceryItems.length,
+      itemBuilder: (context, index) =>
+          _ShoppingListItem(groceryItem: groceryItems[index], onDelete: onDelete,),
     );
   }
 }

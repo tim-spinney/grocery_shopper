@@ -41,9 +41,21 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _addGroceryItem(GroceryItem item) {
+    setState(() {
+      _shoppingList.add(item);
+    });
+  }
+
   void _showAddForm() {
     setState(() {
       _isShowingAddForm = true;
+    });
+  }
+
+  void _hideAddForm() {
+    setState(() {
+      _isShowingAddForm = false;
     });
   }
 
@@ -56,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: _isShowingAddForm
-            ? NewShoppingItemForm()
+            ? NewShoppingItemForm(hideAddForm: _hideAddForm, addGroceryItem: _addGroceryItem,)
             : ShoppingList(
               groceryItems: _shoppingList,
               onDelete: _removeGroceryItem,
