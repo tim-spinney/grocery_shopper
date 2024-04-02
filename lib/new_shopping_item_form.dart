@@ -17,12 +17,14 @@ int _decimalMoneyToCents(String decimalMoney) {
 }
 
 class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
-  ItemUnit? _itemUnit;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _categoryController = TextEditingController();
   final _quantityController = TextEditingController();
 
   final _priceController = TextEditingController();
+
+  ItemUnit? _itemUnit;
 
   void _setItemUnit(ItemUnit? itemUnit) {
     print(itemUnit);
@@ -32,21 +34,25 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
   }
 
   void _onSave() {
-    final newGroceryItem = GroceryItem(
-      name: _nameController.text,
-      category: _categoryController.text,
-      quantity: int.parse(_quantityController.text),
-      unit: _itemUnit!, // TODO: deal with possibility of null
-      priceInCents: _decimalMoneyToCents(_priceController.text),
-    );
+    if(_formKey.currentState?.validate() ?? false) {
+      final newGroceryItem = GroceryItem(
+        name: _nameController.text,
+        category: _categoryController.text,
+        quantity: int.parse(_quantityController.text),
+        unit: _itemUnit!,
+        // TODO: deal with possibility of null
+        priceInCents: _decimalMoneyToCents(_priceController.text),
+      );
 
-    widget.addGroceryItem(newGroceryItem);
-    widget.hideAddForm();
+      widget.addGroceryItem(newGroceryItem);
+      widget.hideAddForm();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Form(
+      key: _formKey,
       child: SingleChildScrollView(
         child: Column(
           children: [
@@ -55,12 +61,24 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
                 labelText: 'Name'
               ),
               controller: _nameController,
+              validator: (value) {
+                if(value == null || value.trim().isEmpty) {
+                  return 'Name cannot be empty.';
+                }
+                return null;
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
                   labelText: 'Category'
               ),
               controller: _categoryController,
+              validator: (value) {
+                if(value == null || value.trim().isEmpty) {
+                  return 'Category cannot be empty.';
+                }
+                return null;
+              },
             ),
             TextFormField(
               decoration: const InputDecoration(
@@ -68,6 +86,19 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
               ),
               keyboardType: TextInputType.number,
               controller: _quantityController,
+              validator: (value) {
+                if(value == null || value.trim().isEmpty) {
+                  return 'Quantity cannot be empty.';
+                }
+                int? asInt = int.tryParse(value);
+                if(asInt == null) {
+                  return 'Quantity must be a whole number.';
+                }
+                if(asInt <= 0) {
+                  return 'Quantity must be positive.';
+                }
+                return null;
+              },
             ),
             DropdownButton(
               items: ItemUnit.values.map(
@@ -85,6 +116,19 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
               ),
               keyboardType: TextInputType.number,
               controller: _priceController,
+              validator: (value) {
+                if(value == null || value.trim().isEmpty) {
+                  return 'Quantity cannot be empty.';
+                }
+                double? asDouble = double.tryParse(value);
+                if(asDouble == null) {
+                  return 'Quantity must be a whole number.';
+                }
+                if(asDouble <= 0) {
+                  return 'Quantity must be positive.';
+                }
+                return null;
+              },
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
