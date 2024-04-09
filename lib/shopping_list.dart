@@ -1,37 +1,7 @@
 import 'package:flutter/material.dart';
 import 'grocery_item.dart';
+import 'shopping_list_item.dart';
 
-class _ShoppingListItem extends StatelessWidget {
-  final GroceryItem groceryItem;
-  final void Function(GroceryItem) onDelete;
-
-  const _ShoppingListItem({super.key, required this.groceryItem, required this.onDelete});
-
-  String _makeQuantitySuffix() {
-    if(groceryItem.unit == ItemUnit.Each) {
-      return '';
-    }
-    return ' ${groceryItem.unit.name}(s)';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        title: Text(groceryItem.name),
-        subtitle: Text(groceryItem.category),
-        leading: Text('${groceryItem.quantity}${_makeQuantitySuffix()}'),
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: () {
-            onDelete(groceryItem);
-          },
-        ),
-      ),
-    );
-  }
-}
-                              
 class ShoppingList extends StatelessWidget {
   final List<GroceryItem> groceryItems;
 
@@ -44,7 +14,11 @@ class ShoppingList extends StatelessWidget {
     return ListView.builder(
       itemCount: groceryItems.length,
       itemBuilder: (context, index) =>
-          _ShoppingListItem(groceryItem: groceryItems[index], onDelete: onDelete,),
+          ShoppingListItem(
+            key: ValueKey(groceryItems[index]),
+            groceryItem: groceryItems[index],
+            onDelete: onDelete,
+          ),
     );
   }
 }
