@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
-import 'grocery_item.dart';
+import 'package:grocery_shopper/models/shopping_list.dart';
+import 'package:provider/provider.dart';
 import 'shopping_list_item.dart';
 
-class ShoppingList extends StatelessWidget {
-  final List<GroceryItem> groceryItems;
+class ShoppingListView extends StatelessWidget {
 
-  final void Function(GroceryItem) onDelete;
-
-  const ShoppingList({super.key, required this.groceryItems, required this.onDelete});
+  const ShoppingListView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final shoppingList = context.watch<ShoppingList>();
     return ListView.builder(
-      itemCount: groceryItems.length,
+      itemCount: shoppingList.numItems,
       itemBuilder: (context, index) =>
-          ShoppingListItem(
-            key: ValueKey(groceryItems[index]),
-            groceryItem: groceryItems[index],
-            onDelete: onDelete,
-          ),
+        ShoppingListItem(
+          groceryItemIndex: index,
+        ),
     );
   }
 }

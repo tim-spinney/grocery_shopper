@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shopper/models/recipes.dart';
+import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:grocery_shopper/new_shopping_item_form.dart';
-import 'package:grocery_shopper/shopping_list.dart';
-import 'grocery_item.dart';
+import 'package:grocery_shopper/shopping_list_view.dart';
+import 'package:provider/provider.dart';
+import 'models/grocery_item.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,14 +16,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: ShoppingList(sampleShoppingList)
+        ),
+        ChangeNotifierProvider.value(
+          value: Recipes()
+        )
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
     );
   }
 }
@@ -33,20 +46,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<GroceryItem> _shoppingList = [...sampleShoppingList];
   bool _isShowingAddForm = false;
-
-  void _removeGroceryItem(GroceryItem item) {
-    setState(() {
-      _shoppingList.remove(item);
-    });
-  }
-
-  void _addGroceryItem(GroceryItem item) {
-    setState(() {
-      _shoppingList.add(item);
-    });
-  }
 
   void _showAddForm() {
     setState(() {
@@ -68,20 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("Grocery Shopper"),
         actions: [
           const Icon(Icons.shopping_cart_outlined),
-          Text('${_shoppingList.length}')
+          Text('${context.watch<ShoppingList>().numItems}'),
+          const SizedBox(width: 8,)
         ],
       ),
       body: Center(
         child: _isShowingAddForm
-            ? NewShoppingItemForm(hideAddForm: _hideAddForm, addGroceryItem: _addGroceryItem,)
-            : ShoppingList(
-              groceryItems: _shoppingList,
-              onDelete: _removeGroceryItem,
-            )
+            ? NewShoppingItemForm(hideAddForm: _hideAddForm)
+            : const ShoppingListView()
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+      floatingActionButton: _isShowingAddForm ? null : FloatingActionButton(
         onPressed: _showAddForm,
+        child: const Icon(Icons.add),
       ),
     );
   }

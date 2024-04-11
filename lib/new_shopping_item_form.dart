@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_shopper/grocery_item.dart';
+import 'package:grocery_shopper/models/grocery_item.dart';
+import 'package:grocery_shopper/models/shopping_list.dart';
+import 'package:provider/provider.dart';
 
 class NewShoppingItemForm extends StatefulWidget {
   final void Function() hideAddForm;
-  final void Function(GroceryItem) addGroceryItem;
 
-  const NewShoppingItemForm({super.key, required this.hideAddForm, required this.addGroceryItem});
+  const NewShoppingItemForm({super.key, required this.hideAddForm});
 
   @override
   State<NewShoppingItemForm> createState() => _NewShoppingItemFormState();
@@ -43,9 +44,11 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
         // TODO: deal with possibility of null
         priceInCents: _decimalMoneyToCents(_priceController.text),
       );
-
-      widget.addGroceryItem(newGroceryItem);
+      context.read<ShoppingList>().addGroceryItem(newGroceryItem);
       widget.hideAddForm();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${_nameController.text} added to shopping list.')
+      ));
     }
   }
 
