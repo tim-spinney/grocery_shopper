@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shopper/category_list_provider.dart';
 import 'package:grocery_shopper/models/category_list.dart';
+import 'package:grocery_shopper/models/category_list_yaml_reader.dart';
 import 'package:grocery_shopper/models/recipes.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:grocery_shopper/new_shopping_item_form.dart';
@@ -7,7 +9,7 @@ import 'package:grocery_shopper/shopping_list_view.dart';
 import 'package:provider/provider.dart';
 import 'models/grocery_item.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 }
 
@@ -25,18 +27,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Recipes()
         ),
-        Provider.value(
-          value: CategoryList(['Produce', 'Dairy', 'Bread', 'Snacks'])
-        )
       ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+      child: CategoryListProvider(
+        reader: CategoryListYamlReader(),
+        child: MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          debugShowCheckedModeBanner: false,
+          home: const MyHomePage(),
         ),
-        debugShowCheckedModeBanner: false,
-        home: const MyHomePage(),
       ),
     );
   }
