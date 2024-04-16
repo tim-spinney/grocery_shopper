@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shopper/models/category_list.dart';
 import 'package:grocery_shopper/models/recipes.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:grocery_shopper/new_shopping_item_form.dart';
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider.value(
           value: Recipes()
+        ),
+        Provider.value(
+          value: CategoryList(['Produce', 'Dairy', 'Bread', 'Snacks'])
         )
       ],
       child: MaterialApp(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:grocery_shopper/models/category_list.dart';
 import 'package:grocery_shopper/models/grocery_item.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:provider/provider.dart';
@@ -20,17 +21,23 @@ int _decimalMoneyToCents(String decimalMoney) {
 class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _categoryController = TextEditingController();
   final _quantityController = TextEditingController();
 
   final _priceController = TextEditingController();
 
   ItemUnit? _itemUnit;
 
+  String? _category;
+
   void _setItemUnit(ItemUnit? itemUnit) {
-    print(itemUnit);
     setState(() {
       _itemUnit = itemUnit;
+    });
+  }
+
+  void _setCategory(String? category) {
+    setState(() {
+      _category = category;
     });
   }
 
@@ -38,7 +45,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
     if(_formKey.currentState?.validate() ?? false) {
       final newGroceryItem = GroceryItem(
         name: _nameController.text,
-        category: _categoryController.text,
+        category: _category!,
         quantity: int.parse(_quantityController.text),
         unit: _itemUnit!,
         // TODO: deal with possibility of null
@@ -71,14 +78,17 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
                 return null;
               },
             ),
-            TextFormField(
-              decoration: const InputDecoration(
-                  labelText: 'Category'
-              ),
-              controller: _categoryController,
-              validator: (value) {
-                if(value == null || value.trim().isEmpty) {
-                  return 'Category cannot be empty.';
+            DropdownButtonFormField(
+              items: context.watch<CategoryList>().categories.map(
+                    (category) => DropdownMenuItem(
+                      value: category,
+                      child: Text(category)
+                    )
+              ).toList(),
+              onChanged: _setCategory,
+              validator: (category) {
+                if(category == null) {
+                  return 'Select a category.';
                 }
                 return null;
               },
