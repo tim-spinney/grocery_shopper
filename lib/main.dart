@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:grocery_shopper/category_list_provider.dart';
-import 'package:grocery_shopper/models/category_list.dart';
 import 'package:grocery_shopper/models/category_list_yaml_reader.dart';
 import 'package:grocery_shopper/models/recipes.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
@@ -52,17 +51,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _isShowingAddForm = false;
-
   void _showAddForm() {
     setState(() {
-      _isShowingAddForm = true;
-    });
-  }
-
-  void _hideAddForm() {
-    setState(() {
-      _isShowingAddForm = false;
+      showDialog(
+        context: context,
+        builder: (context) => const Dialog.fullscreen(
+          child: NewShoppingItemForm(),
+        )
+      );
     });
   }
 
@@ -78,12 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
           const SizedBox(width: 8,)
         ],
       ),
-      body: Center(
-        child: _isShowingAddForm
-            ? NewShoppingItemForm(hideAddForm: _hideAddForm)
-            : const ShoppingListView()
+      body: const Center(
+        child: ShoppingListView()
       ),
-      floatingActionButton: _isShowingAddForm ? null : FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: _showAddForm,
         child: const Icon(Icons.add),
       ),

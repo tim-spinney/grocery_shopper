@@ -5,9 +5,8 @@ import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:provider/provider.dart';
 
 class NewShoppingItemForm extends StatefulWidget {
-  final void Function() hideAddForm;
 
-  const NewShoppingItemForm({super.key, required this.hideAddForm});
+  const NewShoppingItemForm({super.key});
 
   @override
   State<NewShoppingItemForm> createState() => _NewShoppingItemFormState();
@@ -52,7 +51,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
         priceInCents: _decimalMoneyToCents(_priceController.text),
       );
       context.read<ShoppingList>().addGroceryItem(newGroceryItem);
-      widget.hideAddForm();
+      Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('${_nameController.text} added to shopping list.')
       ));
@@ -147,7 +146,7 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 OutlinedButton(
-                  onPressed: widget.hideAddForm,
+                  onPressed: () { Navigator.pop(context); },
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
