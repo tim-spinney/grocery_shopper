@@ -23,7 +23,7 @@ class ShoppingListItem extends StatelessWidget {
       child: ListTile(
         title: Text(groceryItem.name),
         subtitle: Text(groceryItem.category),
-        leading: Text('${groceryItem.quantity}${_makeQuantitySuffix(groceryItem)}'),
+        leading: Text(groceryItem.quantityWithUnitSuffix),
         trailing: IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
