@@ -13,4 +13,12 @@ class Inventory extends ChangeNotifier {
   Iterable<String> get locations => _itemsByLocation.keys;
 
   List<InventoryItem> getItemsInLocation(String location) => _itemsByLocation[location] ?? [];
+
+  void removeItem(InventoryItem item) {
+    final items = _itemsByLocation[item.location];
+    if(items != null) {
+      items.remove(item);
+      notifyListeners();
+    }
+  }
 }

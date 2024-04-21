@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'inventory_item_view.dart';
 import 'package:provider/provider.dart';
 
 import 'models/inventory.dart';
@@ -10,16 +11,11 @@ class InventoryLocationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locationItems = context.select((Inventory inventory) => inventory.getItemsInLocation(location));
+    final locationItems = context.watch<Inventory>().getItemsInLocation(location);
     return ListView(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      children: locationItems.map((item) {
-        return ListTile(
-          title: Text(item.name),
-          subtitle: Text(item.quantityWithUnitSuffix),
-        );
-      }).toList(),
+      children: locationItems.map((item) => InventoryItemView(item: item,)).toList(),
     );
   }
 }
