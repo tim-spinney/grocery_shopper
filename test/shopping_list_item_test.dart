@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:grocery_shopper/models/grocery_item.dart';
+import 'package:grocery_shopper/models/item_base.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:grocery_shopper/shopping_list_item.dart';
 import 'package:mockito/mockito.dart';
@@ -16,7 +17,7 @@ main() {
       name: 'Watermelon',
       category: 'Produce',
       quantity: 2500,
-      unit: ItemUnit.Gram,
+      unit: ItemUnit.gram,
     );
 
     final shoppingList = ShoppingList([groceryItem]);
@@ -92,7 +93,7 @@ main() {
       name: 'Orange Juice',
       category: 'Beverages',
       quantity: 350,
-      unit: ItemUnit.Mililiter,
+      unit: ItemUnit.milliliter,
     );
 
     final shoppingList = MockShoppingList();

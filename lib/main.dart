@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:grocery_shopper/category_list_provider.dart';
-import 'package:grocery_shopper/models/category_list_yaml_reader.dart';
-import 'package:grocery_shopper/models/recipes.dart';
-import 'package:grocery_shopper/models/shopping_list.dart';
-import 'package:grocery_shopper/new_shopping_item_form.dart';
-import 'package:grocery_shopper/shopping_list_view.dart';
 import 'package:provider/provider.dart';
+import 'models/category_list_yaml_reader.dart';
+import 'models/inventory_item.dart';
+import 'models/recipes.dart';
+import 'models/shopping_list.dart';
 import 'models/grocery_item.dart';
+import 'models/inventory.dart';
+import 'new_shopping_item_form.dart';
+import 'shopping_list_view.dart';
+import 'category_list_provider.dart';
 
 void main() async {
   runApp(const MyApp());
@@ -26,6 +28,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Recipes()
         ),
+        ChangeNotifierProvider.value(
+          value: Inventory(sampleInventory)
+        )
       ],
       child: CategoryListProvider(
         reader: CategoryListYamlReader(),

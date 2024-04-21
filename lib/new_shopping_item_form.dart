@@ -4,6 +4,8 @@ import 'package:grocery_shopper/models/grocery_item.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
 import 'package:provider/provider.dart';
 
+import 'models/item_base.dart';
+
 class NewShoppingItemForm extends StatefulWidget {
 
   const NewShoppingItemForm({super.key});
