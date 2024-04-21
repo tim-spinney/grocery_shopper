@@ -14,19 +14,19 @@ class InventoryItem extends ItemBase {
 const sampleInventory = [
   InventoryItem(
     name: 'Bananas',
-    location: 'Produce',
+    location: 'Counter',
     quantity: 4,
     unit: ItemUnit.each,
   ),
   InventoryItem(
     name: 'Eggs',
-    location: 'Dairy',
+    location: 'Fridge',
     quantity: 12,
     unit: ItemUnit.each,
   ),
   InventoryItem(
     name: 'Milk, 2%',
-    location: 'Dairy',
+    location: 'Fridge',
     quantity: 500,
     unit: ItemUnit.milliliter,
   ),
