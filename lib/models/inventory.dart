@@ -21,4 +21,9 @@ class Inventory extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void addItem(InventoryItem item) {
+    _itemsByLocation.putIfAbsent(item.location, () => []).add(item);
+    notifyListeners();
+  }
 }

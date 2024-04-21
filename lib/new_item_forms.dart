@@ -88,6 +88,76 @@ class _NewShoppingItemFormState extends State<NewShoppingItemForm> {
   }
 }
 
+class NewInventoryItemForm extends StatefulWidget {
+  const NewInventoryItemForm({super.key});
+
+  @override
+  State<NewInventoryItemForm> createState() => _NewInventoryItemFormState();
+}
+
+class _NewInventoryItemFormState extends State<NewInventoryItemForm> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  final _quantityController = TextEditingController();
+
+  ItemUnit? _itemUnit;
+  String? _location;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _quantityController.dispose();
+    super.dispose();
+  }
+
+  void _setItemUnit(ItemUnit? itemUnit) {
+    setState(() {
+      _itemUnit = itemUnit;
+    });
+  }
+
+  void _setLocation(String? location) {
+    setState(() {
+      _location = location;
+    });
+  }
+
+  void _onSave() {
+    if(_formKey.currentState?.validate() ?? false) {
+      final newInventoryItem = InventoryItem(
+        name: _nameController.text,
+        quantity: int.parse(_quantityController.text),
+        unit: _itemUnit!,
+        location: _location!,
+      );
+      context.read<Inventory>().addItem(newInventoryItem);
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('${_nameController.text} added to shopping list.')
+      ));
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _NameField(_nameController),
+                _LocationField(_setLocation),
+                _QuantityField(_quantityController),
+                _UnitField(_itemUnit, _setItemUnit),
+                _ActionButtons(_onSave),
+              ],
+            )
+        )
+    );
+  }
+}
+
 class _NameField extends StatelessWidget {
   final TextEditingController nameController;
   const _NameField(this.nameController);
@@ -130,6 +200,25 @@ class _CategoryField extends StatelessWidget {
           )
       ).toList(),
       onChanged: setCategory,
+      validator: _validateDropdownOption,
+    );
+  }
+}
+
+class _LocationField extends StatelessWidget {
+  final void Function(String?) setLocation;
+  const _LocationField(this.setLocation);
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField(
+      items: context.watch<Inventory>().locations.map(
+              (location) => DropdownMenuItem(
+              value: location,
+              child: Text(location)
+          )
+      ).toList(),
+      onChanged: setLocation,
       validator: _validateDropdownOption,
     );
   }

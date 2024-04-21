@@ -59,6 +59,11 @@ const pageWidgets = {
   _Page.inventory: InventoryView(),
 };
 
+const newItemDialogs = {
+  _Page.shoppingList: NewShoppingItemForm(),
+  _Page.inventory: NewInventoryItemForm(),
+};
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -73,8 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       showDialog(
         context: context,
-        builder: (context) => const Dialog.fullscreen(
-          child: NewShoppingItemForm(),
+        builder: (context) => Dialog.fullscreen(
+          child: newItemDialogs[_currentPage]!,
         )
       );
     });
@@ -95,7 +100,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: pageWidgets[_currentPage],
       ),
-      floatingActionButton: _currentPage == _Page.inventory ? null : FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         onPressed: _showAddForm,
         child: const Icon(Icons.add),
       ),
