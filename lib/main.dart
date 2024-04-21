@@ -7,7 +7,7 @@ import 'models/shopping_list.dart';
 import 'models/grocery_item.dart';
 import 'models/inventory.dart';
 import 'inventory_view.dart';
-import 'new_shopping_item_form.dart';
+import 'new_item_forms.dart';
 import 'shopping_list_view.dart';
 import 'category_list_provider.dart';
 

@@ -11,7 +11,7 @@ import 'package:grocery_shopper/models/inventory_item.dart';
 import 'package:grocery_shopper/models/item_base.dart';
 import 'package:grocery_shopper/models/recipes.dart';
 import 'package:grocery_shopper/models/shopping_list.dart';
-import 'package:grocery_shopper/new_shopping_item_form.dart';
+import 'package:grocery_shopper/new_item_forms.dart';
 import 'package:grocery_shopper/shopping_list_item.dart';
 import 'package:grocery_shopper/shopping_list_view.dart';
 
