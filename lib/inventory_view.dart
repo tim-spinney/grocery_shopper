@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:grocery_shopper/inventory_item_view.dart';
+import 'package:grocery_shopper/models/inventory_item.dart';
 import 'package:provider/provider.dart';
 import 'models/inventory.dart';
 import 'inventory_location_view.dart';
@@ -8,8 +11,24 @@ class InventoryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locations = context.select((Inventory inventory) => inventory.locations);
-    return ListView.builder(
+    return StreamBuilder(
+      stream: readInventoryItems(),
+      builder: (context, snapshot) {
+        if(snapshot.hasError) {
+          return const Text('Unable to read Cloud Firestore');
+        } else if(snapshot.hasData) {
+          final data = snapshot.data!;
+          return ListView(
+            children: data.map(
+                    (item) => InventoryItemView(item: item)
+            ).toList(),
+          );
+        }
+        return const CircularProgressIndicator();
+      }
+    );
+    //final locations = context.select((Inventory inventory) => inventory.locations);
+    /*return ListView.builder(
       itemCount: locations.length,
       itemBuilder: (context, index) {
         final location = locations.elementAt(index);
@@ -29,6 +48,14 @@ class InventoryView extends StatelessWidget {
           ),
         );
       },
-    );
+    );*/
   }
+
+  Stream<List<InventoryItem>> readInventoryItems() => FirebaseFirestore.instance
+      .collection('inventory_items')
+      .snapshots()
+      .map((snapshot) =>
+      snapshot.docs.map((doc) =>
+          InventoryItem.fromMap(doc.data())
+      ).toList());
 }

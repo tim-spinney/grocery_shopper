@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'models/category_list_yaml_reader.dart';
@@ -10,8 +11,15 @@ import 'inventory_view.dart';
 import 'new_item_forms.dart';
 import 'shopping_list_view.dart';
 import 'category_list_provider.dart';
+import 'firebase_options.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const MyApp());
 }
 

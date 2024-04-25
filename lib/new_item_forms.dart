@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_shopper/models/category_list.dart';
 import 'package:grocery_shopper/models/grocery_item.dart';
@@ -122,15 +123,27 @@ class _NewInventoryItemFormState extends State<NewInventoryItemForm> {
     });
   }
 
-  void _onSave() {
+  void _onSave() async {
     if(_formKey.currentState?.validate() ?? false) {
+      final doc = FirebaseFirestore.instance.collection('inventory_items').doc();
+
+      final firestoreData = {
+        'name': _nameController.text,
+        'quantity': int.parse(_quantityController.text),
+        'unit': _itemUnit!.name,
+        'location': _location!,
+      };
+      await doc.set(firestoreData);
+
+      /*
       final newInventoryItem = InventoryItem(
         name: _nameController.text,
         quantity: int.parse(_quantityController.text),
         unit: _itemUnit!,
         location: _location!,
       );
-      context.read<Inventory>().addItem(newInventoryItem);
+      context.read<Inventory>().addItem(newInventoryItem);*/
+
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('${_nameController.text} added to shopping list.')

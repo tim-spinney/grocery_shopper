@@ -9,6 +9,15 @@ class InventoryItem extends ItemBase {
     required super.quantity,
     required super.unit,
   });
+
+  static InventoryItem fromMap(Map data) {
+    return InventoryItem(
+        name: data['name'],
+        location: data['location'],
+        quantity: data['quantity'],
+        unit: ItemUnit.values.firstWhere((unit) => unit.name == data['unit'])
+    );
+  }
 }
 
 const sampleInventory = [
