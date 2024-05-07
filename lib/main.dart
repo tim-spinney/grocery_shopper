@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'models/category_list_yaml_reader.dart';
 import 'models/inventory_item.dart';
@@ -23,6 +24,20 @@ void main() async {
   runApp(const MyApp());
 }
 
+final _router = GoRouter(
+  initialLocation: '/shoppingList',
+  routes: [
+    GoRoute(
+      path: '/shoppingList',
+      builder: (context, state) => const ShoppingListView(),
+    ),
+    GoRoute(
+      path: '/inventory',
+      builder: (context, state) => const InventoryView(),
+    ),
+  ]
+);
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -43,14 +58,14 @@ class MyApp extends StatelessWidget {
       ],
       child: CategoryListProvider(
         reader: CategoryListYamlReader(),
-        child: MaterialApp(
+        child: MaterialApp.router(
           title: 'Flutter Demo',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          home: const MyHomePage(),
+          routerConfig: _router,
         ),
       ),
     );
