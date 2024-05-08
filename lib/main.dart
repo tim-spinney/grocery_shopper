@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:grocery_shopper/app_scaffold.dart';
 import 'package:provider/provider.dart';
 import 'models/category_list_yaml_reader.dart';
 import 'models/inventory_item.dart';
@@ -27,13 +28,19 @@ void main() async {
 final _router = GoRouter(
   initialLocation: '/shoppingList',
   routes: [
-    GoRoute(
-      path: '/shoppingList',
-      builder: (context, state) => const ShoppingListView(),
-    ),
-    GoRoute(
-      path: '/inventory',
-      builder: (context, state) => const InventoryView(),
+    ShellRoute(
+      builder: (context, state, child) =>
+        AppScaffold(path: state.fullPath!, child: child),
+      routes: [
+        GoRoute(
+          path: '/shoppingList',
+          builder: (context, state) => const ShoppingListView(),
+        ),
+        GoRoute(
+          path: '/inventory',
+          builder: (context, state) => const InventoryView(),
+        ),
+      ],
     ),
   ]
 );
@@ -68,83 +75,6 @@ class MyApp extends StatelessWidget {
           routerConfig: _router,
         ),
       ),
-    );
-  }
-}
-
-enum _Page {
-  shoppingList,
-  inventory,
-}
-
-const pageWidgets = {
-  _Page.shoppingList: ShoppingListView(),
-  _Page.inventory: InventoryView(),
-};
-
-const newItemDialogs = {
-  _Page.shoppingList: NewShoppingItemForm(),
-  _Page.inventory: NewInventoryItemForm(),
-};
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  _Page _currentPage = _Page.shoppingList;
-
-  void _showAddForm() {
-    setState(() {
-      showDialog(
-        context: context,
-        builder: (context) => Dialog.fullscreen(
-          child: newItemDialogs[_currentPage]!,
-        )
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Grocery Shopper"),
-        actions: [
-          const Icon(Icons.shopping_cart_outlined),
-          Text('${context.watch<ShoppingList>().numItems}'),
-          const SizedBox(width: 8,)
-        ],
-      ),
-      body: Center(
-        child: pageWidgets[_currentPage],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddForm,
-        child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Shopping List',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shelves),
-            label: 'Inventory',
-          ),
-        ],
-        currentIndex: _currentPage.index,
-        onTap: (index) {
-          setState(() {
-            _currentPage = _Page.values[index];
-          });
-        },
-      )
     );
   }
 }
