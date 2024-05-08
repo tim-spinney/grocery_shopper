@@ -6,13 +6,13 @@ import 'grocery_item.dart';
 class ShoppingList extends ChangeNotifier {
   final List<GroceryItem> _items = [];
 
-  int get numItems => _items.length;
-
-  GroceryItem operator[](int index) => _items[index];
-
   ShoppingList(Iterable<GroceryItem> items) {
     _items.addAll(items);
   }
+
+  int get numItems => _items.length;
+
+  GroceryItem operator[](int index) => _items[index];
 
   void addGroceryItem(GroceryItem item) {
     _items.add(item);

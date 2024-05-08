@@ -1,51 +1,36 @@
-enum ItemUnit {
-  Gram,
-  Mililiter,
-  Each,
-}
+import 'item_base.dart';
 
-class GroceryItem {
-  final String name;
+class GroceryItem extends ItemBase {
   final String category;
-  final int quantity;
-  final ItemUnit unit;
   final int priceInCents;
 
-  /*GroceryItem(
-      this.name,
-      this.category,
-      this.quantity,
-      this.unit,
-      this.priceInCents
-      );*/
-
-  GroceryItem({
-    required this.name,
+  const GroceryItem({
+    required super.name,
     required this.category,
-    required this.quantity,
-    required this.unit,
+    required super.quantity,
+    required super.unit,
     this.priceInCents = 0
   });
 }
 
-final sampleShoppingList = [
+const sampleShoppingList = [
   // We don't get a choice of stack vs. heap, so Dart just doesn't have "new" in its vocabulary. Everything goes on the heap and gets managed by the garbage collector.
   GroceryItem(
     quantity: 4,
     category: "Produce",
-    unit: ItemUnit.Each,
+    unit: ItemUnit.each,
     name: "Bananas",
   ),
   GroceryItem(
     quantity: 12,
     category: "Dairy",
-    unit: ItemUnit.Each,
+    unit: ItemUnit.each,
     name: "Eggs",
   ),
   GroceryItem(
     name: 'Milk, 2%',
     category: 'Dairy',
     quantity: 500,
-    unit: ItemUnit.Mililiter,
+    unit: ItemUnit.milliliter,
   )
 ];
