@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/inventory_item.dart';
 import 'models/inventory.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum _MenuAction {
   addToShoppingList,
@@ -21,7 +22,9 @@ class InventoryItemView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(item.name),
-      leading: Text(item.quantityWithUnitSuffix),
+      leading: Text(
+        AppLocalizations.of(context)!.quantityWithUnitSuffix(item.quantity, item.unit.name)
+      ),
       trailing: MenuAnchor(
         menuChildren: [
           MenuItemButton(

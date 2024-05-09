@@ -1,0 +1,18 @@
+{
+  "groceryShopper": "Grocery Shopper",
+  "@groceryShopper": {
+    "description": "app title"
+  },
+  "remove": "Remove",
+  "quantityWithUnitSuffix": "{quantity, plural, =1{{quantity} {unitName, select, gram{gram} milliliter{milliliter} other{}}} other{{quantity} {unitName, select, gram{grams} milliliter{milliliters} other{}}}}",
+  "@quantityWithUnitSuffix": {
+    "placeholders": {
+      "quantity": {
+        "type": "int"
+      },
+      "unitName": {
+        "type": "String"
+      }
+    }
+  }
+}

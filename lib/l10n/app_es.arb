@@ -1,0 +1,5 @@
+{
+  "groceryShopper": "App de Comprador",
+  "remove": "quitar",
+  "quantityWithUnitSuffix": "{quantity, plural, =1{{quantity} {unitName, select, gram{gramo} milliliter{mililitro} other{}}} other{{quantity} {unitName, select, gram{gramos} milliliter{mililitros} other{}}}}"
+}

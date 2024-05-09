@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'models/shopping_list.dart';
 import 'new_item_forms.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 const newItemDialogs = {
   '/shoppingList': NewShoppingItemForm(),
@@ -29,7 +30,7 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: const Text("Grocery Shopper"),
+          title: Text(AppLocalizations.of(context)!.groceryShopper),
           actions: [
             const Icon(Icons.shopping_cart_outlined),
             Text('${context.watch<ShoppingList>().numItems}'),
